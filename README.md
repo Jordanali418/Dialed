@@ -1,6 +1,5 @@
 # Secure Health Tracker
-
-A beginner-friendly healthcare technology project built with Python and Flask.
+Dialed is a health and fitness tracking web application built with Python, Flask, SQLite, HTML, CSS, and JavaScript.
 
 ## Goal
 
