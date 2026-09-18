@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Medications | Dialed{% endblock %}
+
+{% block content %}
+
+<h1>Medications</h1>
+
+<p class="subtitle">
+    Keep track of your medications and schedule.
+</p>
+
+<section class="card">
+
+    <h2>Add Medication</h2>
+
+    <form action="/add-medication" method="POST">
+
+        <label>Medication</label>
+        <input
+            type="text"
+            name="name"
+            placeholder="Example: Vitamin D"
+            required
+        >
+
+        <label>Dosage</label>
+        <input
+            type="text"
+            name="dosage"
+            placeholder="Example: 1000 IU"
+            required
+        >
+
+        <label>Time</label>
+        <input
+            type="time"
+            name="time"
+            required
+        >
+
+        <button type="submit">
+            Add Medication
+        </button>
+
+    </form>
+
+</section>
+
+<section class="card">
+
+    <h2>My Medications</h2>
+
+    {% if medications %}
+
+        {% for medication in medications %}
+
+            <div class="medication">
+
+                <strong>
+                    {{ medication["name"] }}
+                </strong>
+
+                <p>
+                    {{ medication["dosage"] }}
+                    —
+                    {{ medication["time"] }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No medications added yet.</p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

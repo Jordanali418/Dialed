@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Dialed{% endblock %}
+
+{% block content %}
+
+<h1>Dashboard</h1>
+
+<p class="subtitle">
+    Stay dialed in on your health, fitness, and daily routine.
+</p>
+
+<div class="dashboard-grid">
+
+    <section class="card">
+        <h2>Medications</h2>
+
+        <p>
+            {{ medication_count }}
+            medication{% if medication_count != 1 %}s{% endif %}
+            currently tracked.
+        </p>
+
+        <a href="/medications" class="button-link">
+            View Medications
+        </a>
+    </section>
+
+    <section class="card">
+        <h2>Workouts</h2>
+
+        <p>
+            {{ workout_count }}
+            workout{% if workout_count != 1 %}s{% endif %}
+            logged.
+        </p>
+
+        <a href="/workouts" class="button-link">
+            View Workouts
+        </a>
+    </section>
+
+</div>
+
+{% endblock %}

@@ -68,3 +68,68 @@ button {
     border-top: 1px solid #ddd;
     padding: 14px 0;
 }
+
+.navbar {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #1f2937;
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-links a {
+    color: #1f2937;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.button-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #1f2937;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.button-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
