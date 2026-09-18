@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthTrack</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<main class="container">
+
+    <h1>HealthTrack</h1>
+    <p>Track medications, workouts, and daily health habits.</p>
+
+    <section class="card">
+
+        <h2>Add Medication</h2>
+
+        <form action="/add-medication" method="POST">
+
+            <label>Medication</label>
+            <input type="text" name="name" required>
+
+            <label>Dosage</label>
+            <input type="text" name="dosage" placeholder="Example: 20 mg" required>
+
+            <label>Time</label>
+            <input type="time" name="time" required>
+
+            <button type="submit">Add Medication</button>
+
+        </form>
+
+    </section>
+
+    <section class="card">
+
+        <h2>My Medications</h2>
+
+        {% if medications %}
+
+            {% for medication in medications %}
+
+                <div class="medication">
+
+                    <strong>{{ medication["name"] }}</strong>
+
+                    <p>
+                        {{ medication["dosage"] }}
+                        —
+                        {{ medication["time"] }}
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>No medications added yet.</p>
+
+        {% endif %}
+
+    </section>
+
+    <section class="card">
+
+    <h2>Log Workout</h2>
+
+    <form action="/add-workout" method="POST">
+
+        <label>Exercise</label>
+        <input
+            type="text"
+            name="exercise"
+            placeholder="Example: Bench Press"
+            required
+        >
+
+        <label>Sets</label>
+        <input
+            type="number"
+            name="sets"
+            min="1"
+            required
+        >
+
+        <label>Reps</label>
+        <input
+            type="number"
+            name="reps"
+            min="1"
+            required
+        >
+
+        <label>Weight (lb)</label>
+        <input
+            type="number"
+            name="weight"
+            min="0"
+            step="0.5"
+            required
+        >
+
+        <button type="submit">Log Workout</button>
+
+    </form>
+
+</section>
+
+<section class="card">
+
+    <h2>Workout History</h2>
+
+    {% if workouts %}
+
+        {% for workout in workouts %}
+
+            <div class="workout">
+
+                <strong>{{ workout["exercise"] }}</strong>
+
+                <p>
+                    {{ workout["sets"] }} sets ×
+                    {{ workout["reps"] }} reps ×
+                    {{ workout["weight"] }} lb
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No workouts logged yet.</p>
+
+    {% endif %}
+
+</section>
+
+</main>
+
+</body>
+</html>
