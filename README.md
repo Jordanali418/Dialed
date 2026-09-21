@@ -4,29 +4,36 @@ Dialed is a health and fitness tracking web application built with Python, Flask
 
 ## Current Features
 
-- Multi-page dashboard
-- Medication tracking
-- Workout logging
-- Persistent data storage with SQLite
-- Separate medication and workout pages
-- Responsive navigation
+- Daily overview with sleep, hydration, mood, today's workout, and reminders
+- Daily health check-ins with dated history and editable notes
+- Reusable Monday–Sunday exercise plans with sets, reps, and weight
+- Record planned exercises as completed, or log an exercise separately
+- Dated workout history; existing entries retain their original data and show an unknown date
+- Daily or weekly in-app reminders with per-day completion and undo
+- Medication schedule tracking
+- Responsive layout and server-side input validation
+- Persistent SQLite storage with automatic, additive schema migration
+
+## Reminder behavior
+
+Reminders appear on the overview on their scheduled day, ordered by the entered time. Completion resets for each new date. This version does not deliver push, email, or background notifications. Dates follow the local time of the computer running the app. Medication schedules are tracked separately; add a reminder if you want a corresponding daily checklist item.
 
 ## Planned Features
 
-- Reusable workout routines
-- Log saved workouts on different dates
-- Workout history and progress tracking
-- Strength and cardio support
-- Daily health tracking
-- Sleep and hydration tracking
+- Push notifications and user-specific time zones
+- Workout plan editing, cardio tracking, and progress charts
+- User registration and private per-user accounts
 - Medication completion tracking
-- User registration and login
-- Secure password hashing
-- User-specific data
-- Progress charts and statistics
-- Input validation
-- Accessibility improvements
-- Mobile-friendly design
+
+This version is a local, single-user app; it has no account isolation and is not ready for public hosting.
+
+## Tests
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -v
+```
+
+Tests cover health-log updates, validation, weekday plans, dated workout logging, daily reminder completion, and preservation of legacy workout data.
 
 ## Tech Stack
 

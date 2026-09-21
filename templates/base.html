@@ -1,37 +1,3 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>{% block title %}Dialed{% endblock %}</title>
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
-</head>
-
-<body>
-
-<nav class="navbar">
-    <div class="nav-container">
-
-        <a href="/" class="logo">Dialed</a>
-
-        <div class="nav-links">
-            <a href="/">Dashboard</a>
-            <a href="/medications">Medications</a>
-            <a href="/workouts">Workouts</a>
-        </div>
-
-    </div>
-</nav>
-
-<main class="container">
-    {% block content %}
-    {% endblock %}
-</main>
-
-</body>
-</html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{% block title %}Dialed · Your daily rhythm{% endblock %}</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body><nav class="navbar"><div class="nav-container"><a href="/" class="logo"><span class="logo-mark">d.</span> dialed<span class="dot">.</span></a><div class="nav-links">{% for url, label in [('/', 'Overview'),('/health','Health log'),('/workouts','Workouts'),('/reminders','Reminders'),('/medications','Medications')] %}<a href="{{ url }}" {% if request.path == url %}aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</div><span class="local-label">YOUR DAILY RHYTHM</span></div></nav><main class="container">{% block content %}{% endblock %}</main><footer>Small steps. Showing up. Staying dialed.</footer></body></html>

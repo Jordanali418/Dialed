@@ -1,45 +1,6 @@
-{% extends "base.html" %}
-
-{% block title %}Dashboard | Dialed{% endblock %}
-
-{% block content %}
-
-<h1>Dashboard</h1>
-
-<p class="subtitle">
-    Stay dialed in on your health, fitness, and daily routine.
-</p>
-
-<div class="dashboard-grid">
-
-    <section class="card">
-        <h2>Medications</h2>
-
-        <p>
-            {{ medication_count }}
-            medication{% if medication_count != 1 %}s{% endif %}
-            currently tracked.
-        </p>
-
-        <a href="/medications" class="button-link">
-            View Medications
-        </a>
-    </section>
-
-    <section class="card">
-        <h2>Workouts</h2>
-
-        <p>
-            {{ workout_count }}
-            workout{% if workout_count != 1 %}s{% endif %}
-            logged.
-        </p>
-
-        <a href="/workouts" class="button-link">
-            View Workouts
-        </a>
-    </section>
-
-</div>
-
-{% endblock %}
+{% extends 'base.html' %}{% block content %}
+<div class="eyebrow">{{ days[current_day] }} / {{ today }}</div><div class="page-heading"><div><h1>A little better, every day.</h1><p class="subtitle">Your health, your training, your rhythm. All in one place.</p></div><a class="button" href="/health">+ Daily check-in</a></div>
+<div class="stats"><div class="stat"><span>LAST NIGHT’S SLEEP</span><strong>{{ health.sleep if health else '—' }} <small>hrs</small></strong></div><div class="stat"><span>TODAY’S WATER</span><strong>{{ health.water if health else '—' }} <small>oz</small></strong></div><div class="stat"><span>HOW YOU FEEL</span><strong>{{ health.mood if health else 'Not logged' }}</strong></div><div class="stat"><span>TODAY’S TRAINING</span><strong>{{ plan|length }} <small>exercises</small></strong></div></div>
+<div class="dashboard-grid"><section class="card"><div class="section-heading"><h2>Today’s workout</h2><a href="/workouts">Weekly plan ↗</a></div><p class="subtitle">{{ days[current_day] }} · Make time for yourself.</p>{% for item in plan %}<div class="list-row"><div><strong>{{ item.exercise }}</strong><p>{{ item.sets }} sets × {{ item.reps }} reps · {{ item.weight }} lb</p></div><form action="/routine/{{ item.id }}/log" method="post"><button class="secondary">Log completed</button></form></div>{% else %}<div class="empty"><span class="empty-icon">↗</span><h3>Your next session starts here.</h3><p>Build a routine for each day of your week.</p><a href="/workouts" class="button secondary">Plan a workout</a></div>{% endfor %}</section>
+<section class="card"><div class="section-heading"><h2>Your reminders</h2><a href="/reminders">Manage ↗</a></div><p class="subtitle">A little structure for the things that matter.</p>{% for reminder in reminders %}<div class="list-row {{ 'completed' if reminder.done }}"><div><strong>{{ reminder.title }}</strong><p>{{ reminder.time }} · {{ 'Done for today' if reminder.done else 'Today' }}</p></div><form action="/reminders/{{ reminder.id }}/toggle" method="post"><button class="secondary">{{ 'Undo' if reminder.done else 'Mark done' }}</button></form></div>{% else %}<div class="empty"><span class="empty-icon">◷</span><h3>Make room for good habits.</h3><p>Add a check-in, hydration, or workout reminder.</p><a href="/reminders" class="button secondary">Add a reminder</a></div>{% endfor %}</section></div>
+<section class="card"><div class="section-heading"><h2>Recent training</h2><a href="/workouts">All activity ↗</a></div>{% for item in recent %}<div class="list-row"><strong>{{ item.exercise }}</strong><span>{{ item.sets }} × {{ item.reps }} · {{ item.weight }} lb</span><span>{{ item.day or 'Earlier log · date unknown' }}</span></div>{% else %}<p class="subtitle">Your completed exercises will appear here. One session at a time.</p>{% endfor %}</section>{% endblock %}
