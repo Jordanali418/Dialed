@@ -21,6 +21,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS medications (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, dosage TEXT NOT NULL, time TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS workouts (id INTEGER PRIMARY KEY AUTOINCREMENT, exercise TEXT NOT NULL, sets INTEGER NOT NULL, reps INTEGER NOT NULL, weight REAL NOT NULL);
         CREATE TABLE IF NOT EXISTS health_logs (id INTEGER PRIMARY KEY, day TEXT UNIQUE NOT NULL, sleep REAL NOT NULL, water INTEGER NOT NULL, mood TEXT NOT NULL, notes TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS routine_names (weekday INTEGER PRIMARY KEY CHECK(weekday BETWEEN 0 AND 6), name TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS routine_exercises (id INTEGER PRIMARY KEY, weekday INTEGER NOT NULL, exercise TEXT NOT NULL, sets INTEGER NOT NULL, reps INTEGER NOT NULL, weight REAL NOT NULL);
         CREATE TABLE IF NOT EXISTS reminders (id INTEGER PRIMARY KEY, title TEXT NOT NULL, time TEXT NOT NULL, weekday INTEGER);
         CREATE TABLE IF NOT EXISTS reminder_completions (reminder_id INTEGER NOT NULL, day TEXT NOT NULL, PRIMARY KEY(reminder_id, day));
@@ -120,8 +121,33 @@ def workouts():
     with get_db_connection() as conn:
         logs = conn.execute('SELECT * FROM workouts ORDER BY day DESC,id DESC').fetchall()
         plan = conn.execute('SELECT * FROM routine_exercises ORDER BY weekday,id').fetchall()
-    return render_template('workouts.html', workouts=logs, plan=plan)
+        names = {
+            row['weekday']: row['name']
+            for row in conn.execute('SELECT weekday, name FROM routine_names')
+        }
+    return render_template(
+        'workouts.html', workouts=logs, plan=plan, routine_names=names
+    )
 
+
+@app.route('/routine-name', methods=['POST'])
+def save_routine_name():
+    weekday = number('weekday', 0, 6, True)
+    name = request.form.get('name', '').strip()
+    if len(name) > 40:
+        raise ValueError('Routine names must be 40 characters or fewer.')
+
+    with get_db_connection() as conn:
+        if name:
+            conn.execute(
+                '''INSERT INTO routine_names(weekday, name) VALUES (?, ?)
+                   ON CONFLICT(weekday) DO UPDATE SET name=excluded.name''',
+                (weekday, name),
+            )
+        else:
+            conn.execute('DELETE FROM routine_names WHERE weekday=?', (weekday,))
+
+    return redirect('/workouts')
 
 @app.route('/add-workout', methods=['POST'])
 def add_workout():
